@@ -10,8 +10,9 @@ This is a quick guide of how to get set up and running a robust real-time facial
 3. Then run ```detect.py``` for realtime face recognization.
 
 ![Alt Text](MEDIA/gif.gif) <br>
-As the Facenet model was trained on older versions of TensorFlow, the architecture.py file is used to define the model's architecture on newer versions of TensorFlow so that the pre-trained model's weight can be loaded.
- 
+As the Facenet model was trained on older versions of TensorFlow, the architecture.py file is used to define the model's architecture on newer versions of TensorFlow so that the pre-trained model's weight can be loaded.<br>
+
+ Dowload pre-trained weight from [Here.👈](https://drive.google.com/drive/folders/1-Frhel960FIv9jyEWd_lwY5bVYipizIT) <br>
 For in depth explanation follow this amazingly expained [article. 👈](https://arsfutura.com/magazine/face-recognition-with-facenet-and-mtcnn/)
 
 # Dependencies
