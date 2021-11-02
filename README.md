@@ -18,7 +18,7 @@ For in depth explanation follow this amazingly expained [article. 👈](https://
 # Dependencies
 This code was working properly on tensroflow 2.3.0.
 ```
-tenorflow 2.X
+Tensorflow 2.X
 numpy
 opencv-python
 mtcnn
