@@ -35,6 +35,8 @@ for face_names in os.listdir(face_data):
         img_RGB = cv2.cvtColor(img_BGR, cv2.COLOR_BGR2RGB)
 
         x = face_detector.detect_faces(img_RGB)
+        if x == []:
+            continue
         x1, y1, width, height = x[0]['box']
         x1, y1 = abs(x1) , abs(y1)
         x2, y2 = x1+width , y1+height
