@@ -8,6 +8,8 @@ from tensorflow.keras.models import load_model
 import pickle
 
 
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
 confidence_t=0.99
 recognition_t=0.5
 required_size = (160,160)
@@ -59,6 +61,36 @@ def detect(img ,detector,encoder,encoding_dict):
     return img 
 
 
+def detect_opencv(img, coords, encoder, encoding_dict):
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    if type(coords) == tuple:
+        return img
+    x, y, w, h = coords[0]
+    pt_1 = (x, y)
+    pt_2 = (x+w, y+h)
+    face = img_rgb[x:x+w, y:y+h]
+    encode = get_encode(encoder, face, required_size)
+    encode = l2_normalizer.transform(encode.reshape(1, -1))[0]
+    name = 'unknown'
+
+    distance = float("inf")
+    for db_name, db_encode in encoding_dict.items():
+        dist = cosine(db_encode, encode)
+        if dist < recognition_t and dist < distance:
+            name = db_name
+            distance = dist
+
+    if name == 'unknown':
+        cv2.rectangle(img, pt_1, pt_2, (0, 0, 255), 2)
+        cv2.putText(img, name, pt_1, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1)
+    else:
+        cv2.rectangle(img, pt_1, pt_2, (0, 255, 0), 2)
+        cv2.putText(img, name + f'__{distance:.2f}', (pt_1[0], pt_1[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                    (0, 200, 200), 2)
+    return img 
+
+
+
 
 if __name__ == "__main__":
     required_shape = (160,160)
@@ -77,8 +109,9 @@ if __name__ == "__main__":
         if not ret:
             print("CAM NOT OPEND") 
             break
-        
+        # coords = face_cascade.detectMultiScale(frame,scaleFactor=1.1, minNeighbors=5)
         frame= detect(frame , face_detector , face_encoder , encoding_dict)
+        # frame = detect_opencv(frame, coords, face_encoder , encoding_dict)
 
         cv2.imshow('camera', frame)
 
